@@ -3,6 +3,8 @@ package servidorTCP.lanzador;
 import servidorTCP.datos.GestorArchivo;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -21,6 +23,10 @@ public class ServidorTCP {
      * Datos que ingresan al servidor
      */
     private static DataInputStream in;
+    /**
+     * Datos que salen del servidor
+     */
+    private static DataOutputStream out;
     /**
      * Elección del cliente
      */
@@ -47,8 +53,9 @@ public class ServidorTCP {
             // Espera a que se conecte un cliente
             cliente = servidor.accept();
 
-            // Inicia la entrada del servidor
+            // Inicia la entrada y salida del servidor
             in = new DataInputStream(cliente.getInputStream());
+            out = new DataOutputStream(cliente.getOutputStream());
 
             System.out.println("Se ha conectado un cliente");
 
@@ -63,7 +70,7 @@ public class ServidorTCP {
             }
 
         } catch(Exception e){
-            System.out.println("Error de conexión: "+e.getMessage());
+            System.out.println("Error de conexión");
         }
 
     }
@@ -74,7 +81,15 @@ public class ServidorTCP {
             case 1:
                 System.out.println("El cliente quiere ver la lista de archivos");
 
-                System.out.println(ga.listaArchivos("archivos_servidor"));
+                try{
+                    // Envía la lista de archivos al cliente
+                    out.writeUTF(ga.listarArchivos("archivos_servidor"));
+
+                    System.out.println("Se ha enviado la lista de archivos");
+                } catch(IOException e){
+                    System.out.println("Error al enviar la lista de archivos");
+                }
+
                 break;
 
             case 2:

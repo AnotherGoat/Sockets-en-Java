@@ -1,6 +1,8 @@
 package clienteTCP.lanzador;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -11,6 +13,10 @@ public class ClienteTCP {
      * Socket del cliente
      */
     private static Socket cliente;
+    /**
+     * Datos que entran al cliente
+     */
+    private static DataInputStream in;
     /**
      * Datos que salen del cliente
      */
@@ -23,6 +29,10 @@ public class ClienteTCP {
      * Elección del cliente
      */
     private static int eleccion = -1;
+    /**
+     * String que entra al cliente
+     */
+    private static String entrada;
 
     //// Métodos
     public static void main(String[] args){
@@ -36,7 +46,8 @@ public class ClienteTCP {
             // Inicia el socket
             cliente = new Socket("localhost", 80);
 
-            // Inicia la salida del cliente
+            // Inicia la entrada y salida del cliente
+            in = new DataInputStream(cliente.getInputStream());
             out = new DataOutputStream(cliente.getOutputStream());
 
             do{
@@ -45,7 +56,7 @@ public class ClienteTCP {
             } while(eleccion!=0);
 
         } catch(Exception e){
-            System.out.println("Error de conexión: "+e.getMessage());
+            System.out.println("Error de conexión");
         }
 
     }
@@ -79,17 +90,28 @@ public class ClienteTCP {
     public static void switchEleccion() {
 
         switch(eleccion) {
-            case 0:
-                System.out.println("Ha escogido salir del programa");
-                break;
-
             case 1:
+                try {
+                    // Recibe la lista de archivos desde el servidor
+                    entrada = in.readUTF();
+
+                    System.out.println("\nLista de archivos:");
+                    System.out.println(entrada);
+
+                } catch(IOException e){
+                    System.out.println("No se ha podido recibir la lista de archivos");
+                }
+
                 break;
 
             case 2:
                 break;
 
             case 3:
+                break;
+
+            case 0:
+                System.out.println("Ha escogido salir del programa");
                 break;
 
             default:
