@@ -22,6 +22,14 @@ public class ClienteTCP {
      */
     private static DataOutputStream out;
     /**
+     * Mensaje que recibe el cliente
+     */
+    private static String mensajeEntrada;
+    /**
+     * Mensaje que envía el cliente
+     */
+    private static String mensajeSalida;
+    /**
      * Scanner para tomar entrada por teclado
      */
     private static Scanner teclado;
@@ -29,10 +37,6 @@ public class ClienteTCP {
      * Elección del cliente
      */
     private static int eleccion = -1;
-    /**
-     * String que entra al cliente
-     */
-    private static String entrada;
 
     //// Métodos
     public static void main(String[] args){
@@ -91,20 +95,22 @@ public class ClienteTCP {
 
         switch(eleccion) {
             case 1:
-                try {
-                    // Recibe la lista de archivos desde el servidor
-                    entrada = in.readUTF();
-
-                    System.out.println("\nLista de archivos:");
-                    System.out.println(entrada);
-
-                } catch(IOException e){
-                    System.out.println("No se ha podido recibir la lista de archivos");
-                }
-
+                // Recibe la lista de archivos desde el servidor
+                recibirMensajeYMostrar();
                 break;
 
             case 2:
+                teclado = new Scanner(System.in);
+
+                System.out.println("Ingrese la ruta del archivo que quiere duplicar:");
+                mensajeSalida = teclado.nextLine();
+
+                // Envía la ruta al servidor
+                enviarMensaje();
+
+                // Muestra la respuesta del servidor
+                recibirMensajeYMostrar();
+
                 break;
 
             case 3:
@@ -118,5 +124,36 @@ public class ClienteTCP {
                 System.out.println("Opción no válida");
         }
 
+    }
+
+    public static void enviarMensaje(){
+        try{
+            // Envía el mensaje
+            out.writeUTF(mensajeSalida);
+        } catch(IOException e){
+            System.out.println("No se ha podido enviar el mensaje");
+        }
+    }
+
+    public static void recibirMensaje(){
+        try {
+            // Recibe el mensaje
+            mensajeEntrada = in.readUTF();
+        } catch(IOException e){
+            System.out.println("No se ha podido recibir el mensaje");
+        }
+    }
+
+    public static void recibirMensajeYMostrar(){
+        try {
+            // Recibe el mensaje
+            mensajeEntrada = in.readUTF();
+
+            // Muestra el mensaje
+            System.out.println(mensajeEntrada);
+
+        } catch(IOException e){
+            System.out.println("No se ha podido recibir el mensaje");
+        }
     }
 }

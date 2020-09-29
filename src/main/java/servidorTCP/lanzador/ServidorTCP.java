@@ -28,6 +28,14 @@ public class ServidorTCP {
      */
     private static DataOutputStream out;
     /**
+     * Mensaje que recibe el servidor
+     */
+    private static String mensajeEntrada;
+    /**
+     * Mensaje que envía el servidor
+     */
+    private static String mensajeSalida;
+    /**
      * Elección del cliente
      */
     private static int eleccion = -1;
@@ -45,7 +53,7 @@ public class ServidorTCP {
         ga.crearDirectorio("archivos_servidor");
 
         System.out.println("Bienvenido al servidor TCP");
-        System.out.println("Esperando la conexión...");
+        System.out.println("Esperando que se conecte un cliente...");
 
         try{
             // Inicia los socket
@@ -81,19 +89,32 @@ public class ServidorTCP {
             case 1:
                 System.out.println("El cliente quiere ver la lista de archivos");
 
-                try{
-                    // Envía la lista de archivos al cliente
-                    out.writeUTF(ga.listarArchivos("archivos_servidor"));
+                // Envía la lista de archivos como un mensaje
+                mensajeSalida = "\nLista de archivos:\n" + ga.listarArchivos("archivos_servidor");
 
-                    System.out.println("Se ha enviado la lista de archivos");
-                } catch(IOException e){
-                    System.out.println("Error al enviar la lista de archivos");
-                }
-
+                enviarMensaje();
                 break;
 
             case 2:
                 System.out.println("El cliente quiere duplicar un archivo");
+                System.out.println("Esperando entrada...");
+
+                try{
+                    // Recibe el mensaje del cliente
+                    mensajeEntrada = in.readUTF();
+
+                    // Copia el archivo
+                    ga.copiarArchivo("archivos_servidor/"+mensajeEntrada,
+                            "archivos_servidor/"+mensajeEntrada+" - copia");
+
+                    System.out.println("Operación exitosa");
+
+                    mensajeSalida = "Se ha duplicado el archivo con éxito";
+                    enviarMensaje();
+
+                } catch (IOException e){
+                    System.out.println("Error al recibir la entrada del cliente");
+                }
                 break;
 
             case 3:
@@ -109,5 +130,14 @@ public class ServidorTCP {
                 System.out.println("No se reconoce la opción escogida");
         }
 
+    }
+
+    public static void enviarMensaje(){
+        try{
+            // Envía el mensaje
+            out.writeUTF(mensajeSalida);
+        } catch(IOException e){
+            System.out.println("No se ha podido enviar el mensaje");
+        }
     }
 }
