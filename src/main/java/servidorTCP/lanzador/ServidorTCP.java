@@ -14,11 +14,13 @@ public class ServidorTCP {
     /**
      * Socket para aceptar la conexión al servidor
      */
-    private static Socket aceptarConexion;
+    private static Socket cliente;
     /**
      * Datos que ingresan al servidor
      */
     private static DataInputStream in;
+
+    private static int eleccion = -1;
 
     //// Métodos
     public static void main(String[] args){
@@ -29,12 +31,19 @@ public class ServidorTCP {
         try{
             // Inicia los socket
             servidor = new ServerSocket(80);
-            aceptarConexion = servidor.accept();
+            cliente = servidor.accept();
 
             // Inicia la entrada del servidor
-            in = new DataInputStream(aceptarConexion.getInputStream());
+            in = new DataInputStream(cliente.getInputStream());
 
             System.out.println("Se ha conectado un cliente");
+
+            while(eleccion!=0){
+
+                eleccion = in.readInt();
+                System.out.println("El cliente dice: "+eleccion);
+
+            }
 
         } catch(Exception e){
             System.out.println("Error de conexión: "+e.getMessage());

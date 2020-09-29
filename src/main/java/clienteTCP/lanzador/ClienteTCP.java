@@ -41,6 +41,7 @@ public class ClienteTCP {
 
             do{
                 menu();
+                switchEleccion();
             } while(eleccion!=0);
 
         } catch(Exception e){
@@ -51,11 +52,19 @@ public class ClienteTCP {
 
     public static void menu(){
         System.out.println("\nOpciones:");
+        System.out.println("1 - Ver listado de archivos");
+        System.out.println("2 - Duplicar un archivo");
+        System.out.println("3 - Eliminar un archivo");
         System.out.println("0 - Salir");
         System.out.print("Escoja una opción: ");
 
         try {
+            // Almacena la elección
             eleccion = teclado.nextInt();
+
+            // Envía la elección
+            out.writeInt(eleccion);
+
         } catch(Exception e){
             System.out.println("Error de entrada: "+e.getMessage());
 
@@ -64,4 +73,7 @@ public class ClienteTCP {
         }
     }
 
+    public static void switchEleccion(){
+
+    }
 }
