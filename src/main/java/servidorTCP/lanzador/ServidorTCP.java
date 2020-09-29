@@ -31,6 +31,7 @@ public class ServidorTCP {
         try{
             // Inicia los socket
             servidor = new ServerSocket(80);
+            // Espera a que se conecte un cliente
             cliente = servidor.accept();
 
             // Inicia la entrada del servidor
@@ -38,11 +39,14 @@ public class ServidorTCP {
 
             System.out.println("Se ha conectado un cliente");
 
-            while(eleccion!=0){
+            while(eleccion!=0) {
 
+                // Recibe el siguiente int desde el cliente
                 eleccion = in.readInt();
-                System.out.println("El cliente dice: "+eleccion);
+                System.out.println("\nEl cliente dice: " + eleccion);
 
+                // Interpreta la elección del cliente
+                switchEleccion();
             }
 
         } catch(Exception e){
@@ -51,4 +55,29 @@ public class ServidorTCP {
 
     }
 
+    public static void switchEleccion(){
+
+        switch(eleccion){
+            case 1:
+                System.out.println("El cliente quiere ver la lista de archivos");
+                break;
+
+            case 2:
+                System.out.println("El cliente quiere duplicar un archivo");
+                break;
+
+            case 3:
+                System.out.println("El cliente quiere borrar un archivo");
+                break;
+
+            case 0:
+                System.out.println("El cliente se ha desconectado");
+                System.out.println("Se apagará el servidor");
+                break;
+
+            default:
+                System.out.println("No se reconoce la opción escogida");
+        }
+
+    }
 }

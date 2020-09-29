@@ -41,7 +41,7 @@ public class ClienteTCP {
 
             do{
                 menu();
-                switchEleccion();
+
             } while(eleccion!=0);
 
         } catch(Exception e){
@@ -62,8 +62,11 @@ public class ClienteTCP {
             // Almacena la elección
             eleccion = teclado.nextInt();
 
-            // Envía la elección
+            // Envía la elección al servidor
             out.writeInt(eleccion);
+
+            // Interpreta la elección
+            switchEleccion();
 
         } catch(Exception e){
             System.out.println("Error de entrada: "+e.getMessage());
@@ -73,7 +76,25 @@ public class ClienteTCP {
         }
     }
 
-    public static void switchEleccion(){
+    public static void switchEleccion() {
+
+        switch(eleccion) {
+            case 0:
+                System.out.println("Ha escogido salir del programa");
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+
+            default:
+                System.out.println("Opción no válida");
+        }
 
     }
 }
