@@ -18,12 +18,13 @@ public class ServidorTCP {
     /**
      * Datos que ingresan al servidor
      */
-    private static DataInputStream entrada;
+    private static DataInputStream in;
 
     //// Métodos
     public static void main(String[] args){
 
         System.out.println("Bienvenido al servidor TCP");
+        System.out.println("Esperando la conexión...");
 
         try{
             // Inicia los socket
@@ -31,7 +32,9 @@ public class ServidorTCP {
             aceptarConexion = servidor.accept();
 
             // Inicia la entrada del servidor
-            entrada = new DataInputStream(aceptarConexion.getInputStream());
+            in = new DataInputStream(aceptarConexion.getInputStream());
+
+            System.out.println("Se ha conectado un cliente");
 
         } catch(Exception e){
             System.out.println("Error de conexión: "+e.getMessage());

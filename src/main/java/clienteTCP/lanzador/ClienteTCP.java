@@ -14,11 +14,15 @@ public class ClienteTCP {
     /**
      * Datos que salen del cliente
      */
-    private static DataOutputStream salida;
+    private static DataOutputStream out;
     /**
      * Scanner para tomar entrada por teclado
      */
     private static Scanner teclado;
+    /**
+     * Elección del cliente
+     */
+    private static int eleccion = -1;
 
     //// Métodos
     public static void main(String[] args){
@@ -33,12 +37,24 @@ public class ClienteTCP {
             cliente = new Socket("localhost", 80);
 
             // Inicia la salida del cliente
-            salida = new DataOutputStream(cliente.getOutputStream());
+            out = new DataOutputStream(cliente.getOutputStream());
+
+            do{
+                menu();
+            } while(eleccion!=0);
 
         } catch(Exception e){
             System.out.println("Error de conexión: "+e.getMessage());
         }
 
+    }
+
+    public static void menu(){
+        System.out.println("\nOpciones:");
+        System.out.println("0 - Salir");
+        System.out.print("Escoja una opción: ");
+
+        eleccion = teclado.nextInt();
     }
 
 }
