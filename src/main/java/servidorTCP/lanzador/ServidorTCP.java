@@ -33,8 +33,8 @@ public class ServidorTCP {
             // Inicia la entrada del servidor
             entrada = new DataInputStream(aceptarConexion.getInputStream());
 
-        }catch(Exception e){
-            System.out.println("Error de conexión: "+e);
+        } catch(Exception e){
+            System.out.println("Error de conexión: "+e.getMessage());
         }
 
     }
