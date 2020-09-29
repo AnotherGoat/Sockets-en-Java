@@ -54,7 +54,14 @@ public class ClienteTCP {
         System.out.println("0 - Salir");
         System.out.print("Escoja una opción: ");
 
-        eleccion = teclado.nextInt();
+        try {
+            eleccion = teclado.nextInt();
+        } catch(Exception e){
+            System.out.println("Error de entrada: "+e.getMessage());
+
+            // Vuelve a instanciar el Scanner
+            teclado = new Scanner(System.in);
+        }
     }
 
 }
