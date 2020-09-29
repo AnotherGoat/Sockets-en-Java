@@ -56,7 +56,6 @@ public class ClienteTCP {
 
             do{
                 menu();
-
             } while(eleccion!=0);
 
         } catch(Exception e){
@@ -114,6 +113,17 @@ public class ClienteTCP {
                 break;
 
             case 3:
+                teclado = new Scanner(System.in);
+
+                System.out.println("Ingrese la ruta del archivo que quiere borr+ar:");
+                mensajeSalida = teclado.nextLine();
+
+                // Envía la ruta al servidor
+                enviarMensaje();
+
+                // Muestra la respuesta del servidor
+                recibirMensajeYMostrar();
+
                 break;
 
             case 0:

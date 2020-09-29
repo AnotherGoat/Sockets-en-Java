@@ -109,7 +109,7 @@ public class ServidorTCP {
 
                     System.out.println("Operación exitosa");
 
-                    mensajeSalida = "Se ha duplicado el archivo con éxito";
+                    mensajeSalida = "Operación exitosa";
                     enviarMensaje();
 
                 } catch (IOException e){
@@ -119,6 +119,23 @@ public class ServidorTCP {
 
             case 3:
                 System.out.println("El cliente quiere borrar un archivo");
+                System.out.println("Esperando entrada...");
+
+                try{
+                    // Recibe el mensaje del cliente
+                    mensajeEntrada = in.readUTF();
+
+                    // Elimina el archivo
+                    ga.eliminarArchivo("archivos_servidor/"+mensajeEntrada);
+
+                    System.out.println("Operación exitosa");
+
+                    mensajeSalida = "Operación exitosa";
+                    enviarMensaje();
+
+                } catch (IOException e){
+                    System.out.println("Error al recibir la entrada del cliente");
+                }
                 break;
 
             case 0:
